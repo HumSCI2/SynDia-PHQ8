@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling>=1.25"]
+build-backend = "hatchling.build"
+
+[project]
+name = "syndia-phq8"
+version = "0.1.0"
+description = "Reproducible tools for profile-grounded synthetic dialogue generation and PHQ-8 label reconstruction."
+readme = "README.md"
+requires-python = ">=3.10"
+license = {file = "LICENSE"}
+authors = [{name = "Anonymous Authors"}]
+dependencies = [
+  "httpx>=0.27,<1",
+  "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+train = [
+  "accelerate>=1.0",
+  "datasets>=3.0",
+  "peft>=0.14",
+  "torch>=2.4",
+  "transformers>=4.51",
+  "trl>=0.16",
+]
+test = ["pytest>=8.0"]
+
+[project.scripts]
+syndia-generate = "syndia_phq8.generation.generate:main"
+syndia-refine = "syndia_phq8.generation.refine:main"
+syndia-quality = "syndia_phq8.quality.multijudge:main"
+syndia-quality-aggregate = "syndia_phq8.quality.aggregate:main"
+syndia-assess = "syndia_phq8.assessment.evaluate:main"
+syndia-train = "syndia_phq8.finetune.train_lora:main"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/syndia_phq8"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
